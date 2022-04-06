@@ -14,19 +14,27 @@ app.listen(port, () => {
 });
 
 app.get('/users', (req, res) => {
-    res.send(users);
-})
-
-app.get('/users', (req, res) => {
     const name = req.query.name;
-    if (name != undefined){
+    const job = req.query.job;
+    
+   if((name != undefined) & job != undefined){
+      let result = findUserByJobAndName(job, name);
+      result = {users_list: result};
+      res.send(result);
+   }
+   else if(job != undefined){
+        let result = findUserByJob(job);
+        result = {users_list: result};
+        res.send(result);
+   }
+   else if(name != undefined){
         let result = findUserByName(name);
         result = {users_list: result};
         res.send(result);
-    }
-    else{
+   }
+   else{
         res.send(users);
-    }
+   }
 });
 
 app.get('/users/:id', (req, res) => {
@@ -42,11 +50,18 @@ app.get('/users/:id', (req, res) => {
 
 function findUserById(id) {
     return users['users_list'].find( (user) => user['id'] === id); // or line below
-    //no idea what this comment does: return users['users_list'].filter( (user) => user['id'] === id);
 }
 
 const findUserByName = (name) => { 
     return users['users_list'].filter( (user) => user['name'] === name); 
+}
+
+const findUserByJob = (job) => { 
+    return users['users_list'].filter( (user) => user['job'] === job); 
+}
+
+const findUserByJobAndName = (job, name) => { 
+   return users['users_list'].filter( (user) => (user['job'] === job) && (user['name'] === name)); 
 }
 
 app.post('/users', (req, res) => {
@@ -97,6 +112,16 @@ const users = {
       {
          id: 'zap555', 
          name: 'Dennis',
+         job: 'Bartender',
+      },
+      {
+         id: 'joe579', 
+         name: 'Dennis',
+         job: 'Progenitor God of All',
+      },
+      {
+         id: 'kia248', 
+         name: 'Cthulu',
          job: 'Bartender',
       }
    ]

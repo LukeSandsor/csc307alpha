@@ -74,24 +74,28 @@ app.post('/users', (req, res) => {
 
 function addUser(user){
    if(!user.id){
-      const newId = Math.floor(Math.random() * 99999);
-      user.id = newId;
+      const newId = Math.floor(Math.random() * 999999);
+      user.id = newId.toString();
    }
    users['users_list'].push(user);
 }
 
-app.delete('/users', (req, res) => {
-    const userToDel = req.params.id;
-    delUser(userToDel);
-    res.status(200).end();
+app.delete('/users/:id', (req, res) => {
+   const userToDel = req.params.id;
+   if(delUser(userToDel)){
+     res.status(204).end();
+   }
+   res.status(404).end();
 });
 
-function delUser(user){
-   const index = users['users_list'].indexOf(user);
-   if(index != -1)
-      users['users_list'].splice(index, 1);
+function delUser(userToDel){
+  const index = users['users_list'].findIndex((user) => user['id'] === userToDel);
+  if(index != -1){
+     users['users_list'].splice(index, 1);
+     return true
+  }
+  return false
 }
-
 const users = { 
    users_list :
    [

@@ -69,11 +69,15 @@ const findUserByJobAndName = (job, name) => {
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.status(200).end();
+    res.status(201).send(userToAdd).end();
 });
 
 function addUser(user){
-    users['users_list'].push(user);
+   if(!user.id){
+      const newId = Math.floor(Math.random() * 99999);
+      user.id = newId;
+   }
+   users['users_list'].push(user);
 }
 
 app.delete('/users', (req, res) => {
@@ -83,7 +87,7 @@ app.delete('/users', (req, res) => {
 });
 
 function delUser(user){
-   const index = users['users_list'].indexOf(user)
+   const index = users['users_list'].indexOf(user);
    if(index != -1)
       users['users_list'].splice(index, 1);
 }

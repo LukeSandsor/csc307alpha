@@ -1,0 +1,14 @@
+{
+  "name": "stock-portfolio",
+  "version": "1.0.0",
+  "description": "stock portfolio of csc307 TDD assignment",
+  "main": "stock-portfolio.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Luke Sandsor",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.5.1"
+   }
+}

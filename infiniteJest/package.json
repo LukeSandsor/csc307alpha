@@ -1,0 +1,14 @@
+{
+  "name": "infinitejest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sample_functions.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Lucas Sandsor",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.5.1"
+  }
+}

@@ -8,8 +8,6 @@ app.use(cors());
 
 app.use(express.json());
 
-//app.use(mongoose)
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
@@ -52,23 +50,3 @@ app.delete('/users/:id', async (req, res) => {
    }
    res.status(404).end();
 });
-
-
-/*
-DEAD CODE KEEPING UNTIL FINAL PUSH
-const findUserByName = (name) => { 
-   return users['users_list'].filter( (user) => user['name'] === name); 
-}
-
-const findUserByJob = (job) => { 
-   return users['users_list'].filter( (user) => user['job'] === job); 
-}
-
-const findUserByJobAndName = (job, name) => { 
-  return users['users_list'].filter( (user) => (user['job'] === job) && (user['name'] === name)); 
-
-
-function findUserById(id) {
-    return users['users_list'].find( (user) => user['id'] === id); // or line below
-}
-}*/

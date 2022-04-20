@@ -22,63 +22,53 @@ app.get('/users', async (req, res) => {
     const name = req.query.name;
     const job = req.query.job;
     const result = await user_model.getUsers(name, job);
+    if (result === null || result === undefined)
+      res.status(404).send("Resource not found");
     res.send({users_list: result});
    });
 
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
     const id = req.params.id;
-    let result = findUserById(id);
-    if (result === undefined || result.length == 0)
-        res.status(404).send('Resource not found.');
+    const result = await user_model.findUserById(id);
+    if (result === null || result === undefined)
+         res.status(404).send('Resource not found.');
     else {
-        result = {users_list: result};
-        res.send(result);
+        res.send({user_list: result});
     }
 });
 
-function findUserById(id) {
-    return users['users_list'].find( (user) => user['id'] === id); // or line below
-}
-
-const findUserByName = (name) => { 
-    return users['users_list'].filter( (user) => user['name'] === name); 
-}
-
-const findUserByJob = (job) => { 
-    return users['users_list'].filter( (user) => user['job'] === job); 
-}
-
-const findUserByJobAndName = (job, name) => { 
-   return users['users_list'].filter( (user) => (user['job'] === job) && (user['name'] === name)); 
-}
-
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.status(201).send(userToAdd).end();
+    const result = await user_model.addUser(userToAdd);
+    if (result)
+      res.status(201).send(result).end();
 });
 
-function addUser(user){
-   if(!user.id){
-      const newId = Math.floor(Math.random() * 999999);
-      user.id = newId.toString();
-   }
-   users['users_list'].push(user);
-}
-
-app.delete('/users/:id', (req, res) => {
+app.delete('/users/:id', async (req, res) => {
    const userToDel = req.params.id;
-   if(delUser(userToDel)){
+   const result = user_model.delUser(userToDel);
+   if(result){
      res.status(204).end();
    }
    res.status(404).end();
 });
 
-function delUser(userToDel){
-  const index = users['users_list'].findIndex((user) => user['id'] === userToDel);
-  if(index != -1){
-     users['users_list'].splice(index, 1);
-     return true
-  }
-  return false
+
+/*
+DEAD CODE KEEPING UNTIL FINAL PUSH
+const findUserByName = (name) => { 
+   return users['users_list'].filter( (user) => user['name'] === name); 
 }
+
+const findUserByJob = (job) => { 
+   return users['users_list'].filter( (user) => user['job'] === job); 
+}
+
+const findUserByJobAndName = (job, name) => { 
+  return users['users_list'].filter( (user) => (user['job'] === job) && (user['name'] === name)); 
+
+
+function findUserById(id) {
+    return users['users_list'].find( (user) => user['id'] === id); // or line below
+}
+}*/

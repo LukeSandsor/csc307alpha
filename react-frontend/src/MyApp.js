@@ -17,7 +17,7 @@ function MyApp() {
   function updateList(person) {
     makePostCall(person).then(result => {
       if (result && result.status === 201){
-        setCharacters([...characters, result.data]);
+        setCharacters([...characters, result.data])
       }
     });
   }
